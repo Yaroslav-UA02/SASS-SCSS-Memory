@@ -1,0 +1,9 @@
+node_modules/
+.sass-cache/
+*.log
+.env
+.env.local
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

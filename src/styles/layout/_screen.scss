@@ -1,0 +1,12 @@
+// screen = die grosse flaeche in der mitte (dunkle "spielflaeche")
+// alle screens sitzen hier drin, home / game over / winner sind dunkel
+
+@use "../abstracts" as a;
+
+.screen {
+  width: min(94vw, 1120px);
+  min-height: 720px;
+  background: a.$board-dark;
+  display: flex;
+  align-items: center;
+}

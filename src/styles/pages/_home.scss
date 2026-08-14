@@ -1,0 +1,66 @@
+// home screen - user story 1
+
+@use "../abstracts" as a;
+
+// controller liegt schraeg (figma: -37.42deg) und schwebt leicht
+@keyframes float {
+  0% {
+    transform: rotate(-37.42deg) translateY(0);
+  }
+  50% {
+    transform: rotate(-34deg) translateY(-16px);
+  }
+  100% {
+    transform: rotate(-37.42deg) translateY(0);
+  }
+}
+
+.screen--home {
+  position: relative;
+  overflow: hidden;
+}
+
+.home {
+  position: relative;
+  z-index: 1; // ueber dem wasserzeichen
+  padding: 0 clamp(24px, 8vw, 110px);
+
+  &__eyebrow {
+    color: white;
+    // geschaetzt aus screenshot - genaue groesse ggf. aus figma design-panel
+    font-size: clamp(24px, 3.5vw, 40px);
+    font-weight: 400;
+    margin-bottom: 4px;
+  }
+
+  &__title {
+    color: white;
+    // figma: red rose bold 140px, line-height 100%
+    // clamp -> auf grossen screens genau 140px, auf kleinen skaliert es runter
+    font-size: clamp(64px, 12vw, 140px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0;
+    margin-bottom: 56px;
+  }
+
+  // play button liegt tiefer und ist mittig
+  .btn--play {
+    display: flex;
+    width: fit-content;
+    margin: 0 auto;
+  }
+
+  // grosser blasser controller unten links (figma werte)
+  &__watermark {
+    position: absolute;
+    left: -88px;
+    top: 546px;
+    width: 460px;
+    height: auto;
+    color: a.$yellow; // gelb, aber sehr transparent
+    opacity: 0.05;
+    animation: float 5s ease-in-out infinite;
+    z-index: 0;
+  }
+}

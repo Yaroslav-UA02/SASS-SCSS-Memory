@@ -1,0 +1,20 @@
+// hier sammeln wir alle werte - farben werden spaeter aus figma gefuellt
+
+// farben aus dem design
+$blue: #2d6cdf; // spieler blau
+$orange: #ff8a3d; // spieler orange
+$yellow: #f0ea6e; // play / start button + controller
+$board-dark: #2b2b2b; // dunkle spielflaeche (home, game over...)
+$text: #1b1f24;
+$bg: #e0e0e0; // heller seiten-hintergrund
+
+$radius: 8px;
+$spacing: 16px;
+$font: "Red Rose", "Segoe UI", Roboto, Arial, sans-serif;
+
+// breakpoints als map
+$breakpoints: (
+  "phone": 480px,
+  "tablet": 768px,
+  "desktop": 1024px,
+);

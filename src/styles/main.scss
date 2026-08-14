@@ -1,0 +1,18 @@
+// haupt-datei - holt sich alles rein und wird zu css kompiliert
+
+@use "abstracts" as a; // variables + mixins ueber den index
+@use "base/reset";
+
+// layout + komponenten + seiten
+@use "layout/screen";
+@use "components/button";
+@use "pages/home";
+@use "pages/settings";
+
+body {
+  font-family: a.$font;
+  color: a.$text;
+  background: a.$bg;
+  @include a.flex-center;
+  min-height: 100vh;
+}
