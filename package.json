@@ -1,0 +1,19 @@
+{
+  "name": "memory-game",
+  "version": "1.0.0",
+  "description": "Memory Spiel - zwei Spieler, vier Themes, drei Spielfeld-Groessen",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:css": "sass src/styles/main.scss dist/styles.css",
+    "build:js": "tsc",
+    "build": "npm run build:css && npm run build:js",
+    "watch:css": "sass --watch src/styles/main.scss dist/styles.css",
+    "watch:js": "tsc --watch",
+    "dev": "npx --yes live-server --port=5173"
+  },
+  "devDependencies": {
+    "sass": "^1.102.0",
+    "typescript": "^5.9.3"
+  }
+}
