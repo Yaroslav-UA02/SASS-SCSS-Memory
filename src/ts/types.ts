@@ -18,13 +18,27 @@ export type BoardSizeId = "4x4" | "4x6" | "6x6";
 /** Every screen of the app - the router always shows exactly one of them. */
 export type ScreenId = "home" | "settings" | "game" | "gameover";
 
-/** A theme brings its own color scheme and card motifs. */
+/**
+ * One picture on a card face, together with the wording a screen reader
+ * announces for it.
+ */
+export interface Motif {
+  /** Doubles as the file name: `assets/icons/<theme>/<id>.svg`. */
+  readonly id: string;
+  /** Used as the image's alt text, so it names the picture, not the file. */
+  readonly label: string;
+}
+
+/**
+ * A theme is the motif set behind one entry in the settings.
+ *
+ * The color scheme belongs to the SCSS, which reads it off the board's
+ * `data-theme` attribute - that keeps every hex value in one place.
+ */
 export interface Theme {
   readonly id: ThemeId;
   readonly label: string;
-  /** Symbol shown on the card back. */
-  readonly backGlyph: string;
-  readonly motifs: readonly string[];
+  readonly motifs: readonly Motif[];
 }
 
 /** A player as shown in the score bar above the board. */
@@ -49,6 +63,7 @@ export interface Card {
   readonly id: number;
   /** Two cards with the same `pairId` belong together. */
   readonly pairId: number;
-  readonly motif: string;
+  /** Both cards of a pair carry the same motif. */
+  readonly motif: Motif;
   state: CardState;
 }
