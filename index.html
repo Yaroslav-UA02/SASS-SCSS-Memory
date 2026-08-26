@@ -9,10 +9,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Red+Rose:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="dist/styles.css">
+  <script type="module" src="dist/js/main.js"></script>
 </head>
 <body>
 
-  <main class="screen screen--home" hidden>
+<main class="app">
+
+  <section class="screen screen--home" id="screen-home" aria-label="Start screen" hidden>
 
     <div class="home">
       <p class="home__eyebrow">It's play time.</p>
@@ -41,9 +44,9 @@
       <path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.544-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z" />
     </svg>
 
-  </main>
+  </section>
 
-  <main class="screen screen--settings">
+  <section class="screen screen--settings" id="screen-settings" aria-label="Game settings" hidden>
     <div class="settings">
 
       <h1 class="settings__title">Settings</h1>
@@ -177,7 +180,9 @@
 
       </div>
     </div>
-  </main>
+  </section>
+
+</main>
 
 </body>
 </html>
