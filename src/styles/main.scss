@@ -16,3 +16,10 @@ body {
   @include a.flex-center;
   min-height: 100vh;
 }
+
+// wrapper around all screens - the router shows exactly one of them,
+// so this stays a single centered box no matter which screen is up
+.app {
+  width: 100%;
+  @include a.flex-center;
+}

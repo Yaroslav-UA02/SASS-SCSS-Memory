@@ -340,4 +340,11 @@ body {
   min-height: 100vh;
 }
 
+.app {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /*# sourceMappingURL=styles.css.map */
