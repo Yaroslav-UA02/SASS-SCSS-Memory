@@ -1,22 +1,22 @@
-// zentrale typen des spiels.
-// die datei waechst mit: was eine user story braucht, kommt dazu.
+// central types of the game.
+// the file grows along the way: whatever a user story needs gets added.
 
-// die vier themes aus den settings. als union statt string,
-// damit ein tippfehler schon beim kompilieren auffaellt.
+// the four themes from the settings. a union instead of string,
+// so a typo is caught at compile time already.
 export type ThemeId = "code-vibes" | "gaming" | "da-projects" | "foods";
 
 export type PlayerId = "blue" | "orange";
 
 export type BoardSizeId = "4x4" | "4x6" | "6x6";
 
-// jeder screen der app - der router zeigt immer genau einen davon
+// every screen of the app - the router always shows exactly one of them
 export type ScreenId = "home" | "settings" | "game" | "gameover";
 
-// ein theme bringt sein farbschema und seine karten-motive mit
+// a theme brings its own color scheme and card motifs
 export interface Theme {
   readonly id: ThemeId;
   readonly label: string;
-  readonly backGlyph: string; // symbol auf der kartenrueckseite
+  readonly backGlyph: string; // symbol on the card back
   readonly motifs: readonly string[];
 }
 
@@ -32,12 +32,12 @@ export interface BoardSize {
   readonly rows: number;
 }
 
-// eine karte ist verdeckt, kurz aufgedeckt oder als paar gefunden
+// a card is hidden, briefly revealed or matched as a pair
 export type CardState = "hidden" | "revealed" | "matched";
 
 export interface Card {
   readonly id: number;
-  readonly pairId: number; // zwei karten mit gleicher pairId gehoeren zusammen
+  readonly pairId: number; // two cards with the same pairId belong together
   readonly motif: string;
   state: CardState;
 }

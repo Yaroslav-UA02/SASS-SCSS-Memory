@@ -4,7 +4,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Memory</title>
-  <!-- schriftart red rose von google fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Red+Rose:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -12,7 +11,6 @@
 </head>
 <body>
 
-  <!-- user story 1: home screen (erstmal versteckt, wir bauen settings) -->
   <main class="screen screen--home" hidden>
 
     <div class="home">
@@ -20,7 +18,6 @@
       <h1 class="home__title">Ready to play?</h1>
 
       <button class="btn btn--play">
-        <!-- gamepad icon -->
         <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="6" x2="10" y1="11" y2="11" />
@@ -34,7 +31,6 @@
       </button>
     </div>
 
-    <!-- blasser controller im hintergrund, animiert (schwebt) -->
     <svg class="home__watermark" viewBox="0 0 24 24" fill="none" stroke="currentColor"
          stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
       <line x1="6" x2="10" y1="11" y2="11" />
@@ -46,7 +42,6 @@
 
   </main>
 
-  <!-- user story 2: settings screen -->
   <main class="screen screen--settings">
     <div class="settings">
 
@@ -54,13 +49,10 @@
 
       <div class="settings__body">
 
-        <!-- linke spalte: die auswahl (radio buttons) -->
         <form class="settings__form">
 
-          <!-- game themes -->
           <div class="group">
             <h2 class="group__title">
-              <!-- palette icon (pink) -->
               <svg class="group__icon group__icon--themes" viewBox="0 0 24 24" fill="none"
                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="13.5" cy="6.5" r=".5" fill="currentColor" />
@@ -93,10 +85,8 @@
             </label>
           </div>
 
-          <!-- choose player -->
           <div class="group">
             <h2 class="group__title">
-              <!-- pawn icon (teal) -->
               <svg class="group__icon group__icon--player" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 2a3 3 0 0 0-1.9 5.32C9.42 8.02 9 9 9 10c0 1.13.47 2.15 1.22 2.88L9 19h6l-1.22-6.12A3.99 3.99 0 0 0 15 10c0-1-.42-1.98-1.1-2.68A3 3 0 0 0 12 2z" />
                 <path d="M7.5 20h9v2h-9z" />
@@ -115,10 +105,8 @@
             </label>
           </div>
 
-          <!-- board size -->
           <div class="group">
             <h2 class="group__title">
-              <!-- cards icon (blue) -->
               <svg class="group__icon group__icon--size" viewBox="0 0 24 24" fill="none"
                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="8" y="4" width="10" height="15" rx="2" transform="rotate(9 13 11)" />
@@ -145,20 +133,16 @@
 
         </form>
 
-        <!-- rechte spalte: vorschau + breadcrumb -->
         <div class="settings__side">
 
-          <!-- theme vorschau (aendert sich spaeter je nach theme) -->
           <div class="preview">
 
-            <!-- mini topbar (nur deko) -->
             <div class="preview__bar">
               <span class="preview__score">Blue 0 &nbsp; Orange 6</span>
               <span>Current player:</span>
               <span class="preview__exit">Exit game</span>
             </div>
 
-            <!-- zwei grosse karten -->
             <div class="preview__cards">
               <div class="preview__card preview__card--back">
                 <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5"
@@ -184,7 +168,6 @@
 
           </div>
 
-          <!-- breadcrumb: fuellt sich beim auswaehlen, start wird dann aktiv -->
           <div class="breadcrumb">
             <span class="breadcrumb__step">Game theme</span>
             <span class="breadcrumb__sep"></span>

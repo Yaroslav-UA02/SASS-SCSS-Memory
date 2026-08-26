@@ -2,7 +2,7 @@
 
 @use "../abstracts" as a;
 
-// settings ist eine WEISSE flaeche (nicht dunkel wie home)
+// settings is a WHITE area (not dark like home)
 .screen--settings {
   background: white;
   color: a.$text;
@@ -20,7 +20,7 @@
     font-weight: 700;
     margin-bottom: 48px;
 
-    // gelber strich unter der ueberschrift
+    // yellow line under the heading
     &::after {
       content: "";
       position: absolute;
@@ -31,7 +31,7 @@
       background: a.$yellow;
     }
 
-    // romb links am strich
+    // diamond on the left end of the line
     &::before {
       content: "";
       position: absolute;
@@ -52,7 +52,7 @@
   }
 }
 
-// eine auswahl-gruppe (themes / player / size)
+// one option group (themes / player / size)
 .group {
   margin-bottom: 36px;
 
@@ -77,21 +77,21 @@
       color: #22c3b7; // teal
     }
     &--size {
-      color: #2f5fe0; // blau
+      color: #2f5fe0; // blue
     }
   }
 }
 
-// ein radio + label
+// one radio + label
 .option {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 7px 0;
-  padding-left: 28px; // etwas eingerueckt wie im design
+  padding-left: 28px; // slightly indented like in the design
   cursor: pointer;
 
-  // eigenes radio (browser-standard aus, selbst gebaut)
+  // custom radio (browser default off, built by hand)
   input[type="radio"] {
     appearance: none;
     width: 22px;
@@ -121,12 +121,12 @@
     font-size: 24px;
   }
 
-  // ausgewaehltes label wird fett
+  // the selected label turns bold
   input:checked ~ .option__text {
     font-weight: 700;
   }
 
-  // gelbe linie mit pfeilspitze (nur beim ausgewaehlten)
+  // yellow line with arrow head (only on the selected one)
   &__arrow {
     display: none;
     flex: 1;
@@ -152,24 +152,24 @@
   }
 }
 
-// rechte spalte
+// right column
 .settings__side {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-// theme vorschau (dunkles panel mit zwei karten)
+// theme preview (dark panel with two cards)
 .preview {
   position: relative;
   height: 300px;
-  // radialer verlauf - in der mitte etwas heller
+  // radial gradient - a bit lighter in the middle
   background: radial-gradient(circle at 50% 42%, #3d3d3d, #232323);
   border-radius: 16px;
   overflow: hidden;
   padding: 14px;
 
-  // mini topbar oben
+  // mini topbar at the top
   &__bar {
     display: flex;
     align-items: center;
@@ -191,7 +191,7 @@
     border-radius: 6px;
   }
 
-  // die zwei karten mittig
+  // the two cards centered
   &__cards {
     position: absolute;
     inset: 0;
@@ -225,7 +225,7 @@
     }
   }
 
-  // rotes git-kaestchen auf der weissen karte
+  // red git box on the white card
   &__git {
     display: grid;
     place-content: center;
@@ -255,7 +255,7 @@
     font-size: 22px;
   }
 
-  // dicker schraeger gelber strich als trenner
+  // thick slanted yellow line as separator
   &__sep {
     width: 6px;
     height: 30px;

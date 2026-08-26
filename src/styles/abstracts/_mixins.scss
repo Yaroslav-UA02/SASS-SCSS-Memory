@@ -1,4 +1,4 @@
-// wiederverwendbare style-bloecke
+// reusable style blocks
 
 @use "variables" as v;
 @use "sass:map";
@@ -9,7 +9,7 @@
   align-items: center;
 }
 
-// media query aus der breakpoints map
+// media query from the breakpoints map
 @mixin respond($name) {
   $size: map.get(v.$breakpoints, $name);
   @media (min-width: $size) {
