@@ -1,4 +1,4 @@
-// kleiner reset - browser standard-abstaende weg
+// small reset - drops the browser default spacing
 
 * {
   margin: 0;
@@ -16,7 +16,7 @@ button {
   cursor: pointer;
 }
 
-// versteckte screens komplett ausblenden (auch wenn sie flex sind)
+// hide inactive screens completely (even when they are flex)
 [hidden] {
   display: none !important;
 }

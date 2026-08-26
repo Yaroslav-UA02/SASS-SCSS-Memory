@@ -1,5 +1,5 @@
-// index sammelt alle abstracts an einem ort
-// andere dateien holen sich dann nur "abstracts" (ein import statt drei)
+// the index collects all abstracts in one place
+// other files then only pull in "abstracts" (one import instead of three)
 
 @forward "variables";
 @forward "mixins";

@@ -1,9 +1,9 @@
-// haupt-datei - holt sich alles rein und wird zu css kompiliert
+// main file - pulls everything in and gets compiled to css
 
-@use "abstracts" as a; // variables + mixins ueber den index
+@use "abstracts" as a; // variables + mixins via the index
 @use "base/reset";
 
-// layout + komponenten + seiten
+// layout + components + pages
 @use "layout/screen";
 @use "components/button";
 @use "pages/home";

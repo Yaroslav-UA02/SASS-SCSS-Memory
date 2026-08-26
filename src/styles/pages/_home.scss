@@ -2,7 +2,7 @@
 
 @use "../abstracts" as a;
 
-// controller liegt schraeg (figma: -37.42deg) und schwebt leicht
+// the controller is tilted (figma: -37.42deg) and floats slightly
 @keyframes float {
   0% {
     transform: rotate(-37.42deg) translateY(0);
@@ -22,12 +22,12 @@
 
 .home {
   position: relative;
-  z-index: 1; // ueber dem wasserzeichen
+  z-index: 1; // above the watermark
   padding: 0 clamp(24px, 8vw, 110px);
 
   &__eyebrow {
     color: white;
-    // geschaetzt aus screenshot - genaue groesse ggf. aus figma design-panel
+    // estimated from the screenshot - exact size from the figma design panel if needed
     font-size: clamp(24px, 3.5vw, 40px);
     font-weight: 400;
     margin-bottom: 4px;
@@ -36,7 +36,7 @@
   &__title {
     color: white;
     // figma: red rose bold 140px, line-height 100%
-    // clamp -> auf grossen screens genau 140px, auf kleinen skaliert es runter
+    // clamp -> exactly 140px on large screens, scales down on small ones
     font-size: clamp(64px, 12vw, 140px);
     font-weight: 700;
     line-height: 1;
@@ -44,21 +44,21 @@
     margin-bottom: 56px;
   }
 
-  // play button liegt tiefer und ist mittig
+  // play button sits lower and is centered
   .btn--play {
     display: flex;
     width: fit-content;
     margin: 0 auto;
   }
 
-  // grosser blasser controller unten links (figma werte)
+  // large faded controller at the bottom left (figma values)
   &__watermark {
     position: absolute;
     left: -88px;
     top: 546px;
     width: 460px;
     height: auto;
-    color: a.$yellow; // gelb, aber sehr transparent
+    color: a.$yellow; // yellow, but very transparent
     opacity: 0.05;
     animation: float 5s ease-in-out infinite;
     z-index: 0;
