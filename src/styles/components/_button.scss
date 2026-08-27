@@ -17,10 +17,11 @@
     height: 24px;
   }
 
-  // yellow play button (home)
+  // yellow play button (home) - square corners in the design
   &--play {
     background: a.$yellow;
     color: a.$board-dark;
+    border-radius: 0;
     font-size: 22px;
     padding: 16px 30px;
   }
