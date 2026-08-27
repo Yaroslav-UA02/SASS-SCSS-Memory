@@ -4,8 +4,11 @@
 @use "../abstracts" as a;
 
 .screen {
-  width: min(94vw, 1120px);
-  min-height: 720px;
+  // figma frame is 1240x880, i.e. clearly wider than it is tall - at the old
+  // 1120x720 the box was too square, which is what pushed the home title
+  // onto a second line
+  width: min(94vw, 1240px);
+  min-height: 880px;
   background: a.$board-dark;
   display: flex;
   align-items: center;

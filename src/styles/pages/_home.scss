@@ -23,7 +23,10 @@
 .home {
   position: relative;
   z-index: 1; // above the watermark
-  padding: 0 clamp(24px, 8vw, 110px);
+  // in percent, not pixels: in the design the text block keeps the same
+  // share of the frame at every size, and that share is what centers the
+  // title between the two edges
+  padding: 0 14.5%;
 
   &__eyebrow {
     color: white;
@@ -35,13 +38,15 @@
 
   &__title {
     color: white;
-    // figma: red rose bold 140px, line-height 100%
-    // clamp -> exactly 140px on large screens, scales down on small ones
-    font-size: clamp(64px, 12vw, 140px);
+    // the design panel says 140px, but the web font renders "Ready to play?"
+    // about a seventh wider than the mock does, so 140px no longer fits the
+    // one line the design puts it on. 120px reproduces the proportion the
+    // design actually shows: the title covers ~69% of the frame.
+    font-size: clamp(48px, 9.1vw, 120px);
     font-weight: 700;
     line-height: 1;
     letter-spacing: 0;
-    margin-bottom: 56px;
+    margin-bottom: 88px;
   }
 
   // play button sits lower and is centered
@@ -51,12 +56,14 @@
     margin: 0 auto;
   }
 
-  // large faded controller at the bottom left (figma values)
+  // faded controller in the bottom left corner, tilted and slightly cut off
+  // by the two edges it sits in - anchored to the bottom, so it keeps that
+  // corner no matter how tall the screen gets
   &__watermark {
     position: absolute;
-    left: -88px;
-    top: 546px;
-    width: 460px;
+    left: -20px;
+    bottom: -10px;
+    width: 240px;
     height: auto;
     color: a.$yellow; // yellow, but very transparent
     opacity: 0.05;
