@@ -269,6 +269,15 @@ button {
   padding: 4px 8px;
   border-radius: 6px;
 }
+.preview__player {
+  color: white;
+}
+.preview[data-player=blue] .preview__player {
+  color: #2d6cdf;
+}
+.preview[data-player=orange] .preview__player {
+  color: #ff8a3d;
+}
 .preview__cards {
   position: absolute;
   inset: 0;
@@ -276,7 +285,7 @@ button {
   place-content: center;
 }
 .preview__card {
-  position: absolute;
+  grid-area: 1/1;
   width: 150px;
   height: 150px;
   border-radius: 12px;
@@ -297,17 +306,10 @@ button {
   background: #eef2ef;
   transform: translate(52px, 26px) rotate(8deg);
 }
-.preview__git {
-  display: grid;
-  place-content: center;
-  width: 68px;
-  height: 68px;
-  border-radius: 12px;
-  background: #f05133;
-}
-.preview__git svg {
-  width: 40px;
-  height: 40px;
+.preview__motif {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
 }
 
 .breadcrumb {
@@ -319,8 +321,13 @@ button {
   padding: 12px 18px;
 }
 .breadcrumb__step {
-  color: #2b2b2b;
+  color: #9a9a9a;
   font-size: 22px;
+  transition: color 0.15s;
+}
+.breadcrumb__step.is-done {
+  color: #2b2b2b;
+  font-weight: 700;
 }
 .breadcrumb__sep {
   width: 6px;

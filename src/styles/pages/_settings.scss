@@ -1,4 +1,4 @@
-// settings screen - user story 2
+// settings screen - user stories 2 + 4
 
 @use "../abstracts" as a;
 
@@ -191,6 +191,19 @@
     border-radius: 6px;
   }
 
+  // the chosen starting player gets his color in the mini topbar
+  &__player {
+    color: white;
+  }
+
+  &[data-player="blue"] &__player {
+    color: a.$blue;
+  }
+
+  &[data-player="orange"] &__player {
+    color: a.$orange;
+  }
+
   // the two cards centered
   &__cards {
     position: absolute;
@@ -199,8 +212,10 @@
     place-content: center;
   }
 
+  // both cards share one grid cell, so they stack in the middle of the panel
+  // and the transforms below fan them out from there
   &__card {
-    position: absolute;
+    grid-area: 1 / 1;
     width: 150px;
     height: 150px;
     border-radius: 12px;
@@ -225,19 +240,11 @@
     }
   }
 
-  // red git box on the white card
-  &__git {
-    display: grid;
-    place-content: center;
-    width: 68px;
-    height: 68px;
-    border-radius: 12px;
-    background: #f05133;
-
-    svg {
-      width: 40px;
-      height: 40px;
-    }
+  // sample motif of the chosen theme - stays empty until one is picked
+  &__motif {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
   }
 }
 
@@ -250,9 +257,16 @@
   border-radius: 10px;
   padding: 12px 18px;
 
+  // a step is grey until its setting is picked
   &__step {
-    color: #2b2b2b;
+    color: #9a9a9a;
     font-size: 22px;
+    transition: color 0.15s;
+
+    &.is-done {
+      color: #2b2b2b;
+      font-weight: 700;
+    }
   }
 
   // thick slanted yellow line as separator
