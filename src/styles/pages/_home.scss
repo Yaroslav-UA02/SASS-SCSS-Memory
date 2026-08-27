@@ -2,19 +2,6 @@
 
 @use "../abstracts" as a;
 
-// the controller is tilted (figma: -37.42deg) and floats slightly
-@keyframes float {
-  0% {
-    transform: rotate(-37.42deg) translateY(0);
-  }
-  50% {
-    transform: rotate(-34deg) translateY(-16px);
-  }
-  100% {
-    transform: rotate(-37.42deg) translateY(0);
-  }
-}
-
 .screen--home {
   position: relative;
   overflow: hidden;
@@ -61,13 +48,15 @@
   // corner no matter how tall the screen gets
   &__watermark {
     position: absolute;
-    left: -20px;
-    bottom: -10px;
-    width: 240px;
+    left: -63px;
+    bottom: 4px;
+    width: 370px;
     height: auto;
     color: a.$yellow; // yellow, but very transparent
     opacity: 0.05;
-    animation: float 5s ease-in-out infinite;
+    // figma: 37.42deg, and it stays put - the pad is part of the backdrop,
+    // so anything moving there would pull the eye off the button
+    transform: rotate(37.42deg);
     z-index: 0;
   }
 }
