@@ -12,7 +12,7 @@ import { PLAYERS, getPlayer } from "../data/players.js";
 import { THEMES, getTheme, motifSrc } from "../data/themes.js";
 import { qs, qsa } from "../dom.js";
 import { navigate } from "../router.js";
-import { getDraft, isDraftComplete, setPlayer, setSize, setTheme } from "../store.js";
+import { getDraft, isDraftComplete, setPlayer, setSize, setTheme, startGame } from "../store.js";
 /**
  * Narrows a radio's value to a theme id.
  *
@@ -55,6 +55,7 @@ export function initSettings() {
         // second lock, for a click that arrives via the keyboard anyway
         if (!isDraftComplete())
             return;
+        startGame();
         navigate("game");
     });
 }

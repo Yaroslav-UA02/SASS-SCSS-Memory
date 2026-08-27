@@ -13,7 +13,7 @@ import { PLAYERS, getPlayer } from "../data/players.js";
 import { THEMES, getTheme, motifSrc } from "../data/themes.js";
 import { qs, qsa } from "../dom.js";
 import { navigate } from "../router.js";
-import { getDraft, isDraftComplete, setPlayer, setSize, setTheme } from "../store.js";
+import { getDraft, isDraftComplete, setPlayer, setSize, setTheme, startGame } from "../store.js";
 import type { BoardSizeId, PlayerId, ThemeId } from "../types.js";
 
 /**
@@ -59,6 +59,7 @@ export function initSettings(): void {
     // the button is disabled while something is missing; the check is the
     // second lock, for a click that arrives via the keyboard anyway
     if (!isDraftComplete()) return;
+    startGame();
     navigate("game");
   });
 }
