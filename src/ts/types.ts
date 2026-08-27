@@ -87,3 +87,35 @@ export interface GameConfig {
   readonly startingPlayer: PlayerId;
   readonly size: BoardSizeId;
 }
+
+/** How many pairs each player has collected. */
+export type Scores = Record<PlayerId, number>;
+
+/**
+ * What turning a card over led to.
+ *
+ * A discriminated union rather than a bag of optional fields: the board
+ * switches on `kind` and TypeScript then knows exactly which data comes with
+ * it, so there is no case the animation code can silently forget.
+ */
+export type FlipOutcome =
+  /** The click did not count - card already open, or the board is locked. */
+  | { readonly kind: "ignored" }
+  /** First card of the turn is now face up. */
+  | { readonly kind: "first"; readonly index: number }
+  /** Both cards match; they stay open and the same player goes again. */
+  | {
+      readonly kind: "match";
+      readonly indices: readonly [number, number];
+      readonly player: PlayerId;
+      readonly finished: boolean;
+    }
+  /** No match; the cards stay up until the board calls `settle`. */
+  | { readonly kind: "miss"; readonly indices: readonly [number, number] };
+
+/** The final standings of a round. */
+export interface GameResult {
+  readonly scores: Scores;
+  /** `null` on a draw. */
+  readonly winner: PlayerId | null;
+}
