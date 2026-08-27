@@ -22,10 +22,16 @@ export function onEnter(id, hook) {
 /**
  * Shows one screen and hides all the others.
  *
+ * A screen that the markup does not carry yet is ignored instead of leaving
+ * the app on an empty page - the current screen simply stays up.
+ *
  * @param id - Screen to show; its element is `#screen-<id>`.
  */
 export function navigate(id) {
-    for (const screen of qsa(".screen")) {
+    const screens = qsa(".screen");
+    if (!screens.some((screen) => screen.id === `screen-${id}`))
+        return;
+    for (const screen of screens) {
         screen.hidden = screen.id !== `screen-${id}`;
     }
     // the body knows the current screen, so the SCSS can react to it
