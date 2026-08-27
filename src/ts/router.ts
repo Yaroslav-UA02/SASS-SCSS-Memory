@@ -30,10 +30,16 @@ export function onEnter(id: ScreenId, hook: EnterHook): void {
 /**
  * Shows one screen and hides all the others.
  *
+ * A screen that the markup does not carry yet is ignored instead of leaving
+ * the app on an empty page - the current screen simply stays up.
+ *
  * @param id - Screen to show; its element is `#screen-<id>`.
  */
 export function navigate(id: ScreenId): void {
-  for (const screen of qsa<HTMLElement>(".screen")) {
+  const screens = qsa<HTMLElement>(".screen");
+  if (!screens.some((screen) => screen.id === `screen-${id}`)) return;
+
+  for (const screen of screens) {
     screen.hidden = screen.id !== `screen-${id}`;
   }
 
