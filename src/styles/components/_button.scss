@@ -2,6 +2,19 @@
 
 @use "../abstracts" as a;
 
+// the pad rocks between two angles rather than spinning, so it reads as a
+// controller being tilted in someone's hands
+@keyframes pad-rock {
+  0%,
+  100% {
+    transform: rotate(-10deg);
+  }
+
+  50% {
+    transform: rotate(-28deg);
+  }
+}
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -17,13 +30,51 @@
     height: 24px;
   }
 
+  // icon and arrow grow into their hover size instead of snapping to it
+  &__icon,
+  &__arrow {
+    transition: scale 0.2s ease;
+  }
+
   // yellow play button (home) - square corners in the design
   &--play {
     background: a.$yellow;
     color: a.$board-dark;
     border-radius: 0;
-    font-size: 22px;
-    padding: 16px 30px;
+    font-size: 28px;
+    gap: 20px;
+    padding: 20px 24px;
+
+    // the pad is the loudest thing on the button in the design, so it is
+    // far bigger here than the 24px the other buttons use
+    .btn__icon {
+      width: 44px;
+      height: 44px;
+    }
+
+    // hovering wakes the pad up: it grows and rocks in place, and the arrow
+    // grows with it. the label keeps its size, so the button does not jump
+    // around under the cursor.
+    &:hover,
+    &:focus-visible {
+      .btn__icon {
+        scale: 1.3;
+        animation: pad-rock 0.9s ease-in-out infinite;
+      }
+
+      .btn__arrow {
+        scale: 1.2;
+      }
+    }
+
+    // anyone who asked the system for less motion keeps the size change
+    // and loses the rocking
+    @media (prefers-reduced-motion: reduce) {
+      &:hover .btn__icon,
+      &:focus-visible .btn__icon {
+        animation: none;
+      }
+    }
   }
 
   // start button (settings) - grey while disabled, yellow when active
