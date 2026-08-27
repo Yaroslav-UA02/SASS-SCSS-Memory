@@ -173,7 +173,54 @@
     </div>
   </section>
 
+  <section class="screen screen--game" id="screen-game" aria-label="Game board" hidden>
+    <div class="game">
+
+      <div class="topbar">
+
+        <div class="topbar__scores">
+          <span class="scorecard" data-player="blue">
+            Blue <b class="scorecard__value">0</b>
+          </span>
+          <span class="scorecard" data-player="orange">
+            Orange <b class="scorecard__value">0</b>
+          </span>
+        </div>
+
+        <p class="topbar__turn">
+          Current player: <b class="topbar__player">Blue</b>
+        </p>
+
+        <button class="btn btn--exit" type="button">Exit game</button>
+
+      </div>
+
+      <!-- the cards are dealt in from the card template below -->
+      <div class="board" role="group" aria-label="Memory board"></div>
+
+    </div>
+  </section>
+
 </main>
+
+<!-- one card, stamped out once per card on the board -->
+<template class="card-template">
+  <button class="card" type="button">
+    <span class="card__inner">
+      <span class="card__face card__face--back" aria-hidden="true">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5"
+             stroke-linecap="round" stroke-linejoin="round">
+          <rect x="8" y="12" width="32" height="22" rx="3" />
+          <path d="M21 20l-4 3 4 3" />
+          <path d="M27 20l4 3-4 3" />
+        </svg>
+      </span>
+      <span class="card__face card__face--front">
+        <img class="card__motif" src="" alt="">
+      </span>
+    </span>
+  </button>
+</template>
 
 </body>
 </html>
