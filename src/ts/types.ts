@@ -67,3 +67,23 @@ export interface Card {
   readonly motif: Motif;
   state: CardState;
 }
+
+/**
+ * What the settings screen has collected so far.
+ *
+ * Nothing is preselected, so each entry stays `null` until the player picks
+ * it - that is exactly what keeps the start button locked.
+ */
+export interface SettingsDraft {
+  theme: ThemeId | null;
+  player: PlayerId | null;
+  size: BoardSizeId | null;
+}
+
+/** A complete draft, i.e. the settings a round is actually started with. */
+export interface GameConfig {
+  readonly theme: ThemeId;
+  /** The player taking the first turn. */
+  readonly startingPlayer: PlayerId;
+  readonly size: BoardSizeId;
+}
