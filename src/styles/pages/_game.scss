@@ -1,0 +1,144 @@
+// user story 5 - the board: topbar, scorecards and the card grid
+//
+// the settings screen already shows a miniature of this screen, so the
+// colours and shapes here are that preview scaled up rather than a second
+// design: white-on-dark text, a faint chip behind each score, and the exit
+// button outlined in teal.
+
+@use "../abstracts" as a;
+
+// every other screen centres a single block; the game screen fills its box
+// instead, so the topbar sits at the top and the board takes what is left
+.screen--game {
+  align-items: stretch;
+  padding: clamp(20px, 3vw, 40px);
+}
+
+.game {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 3vw, 36px);
+  width: 100%;
+}
+
+// ---- topbar: the scores, whose turn it is, and the way out ----
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+
+  &__scores {
+    display: flex;
+    gap: 12px;
+  }
+
+  &__turn {
+    color: rgb(255 255 255 / 75%);
+    font-size: clamp(15px, 1.6vw, 20px);
+  }
+
+  // the name is written in the colour of whoever is playing, which is the
+  // same cue the settings preview uses
+  &__player {
+    font-weight: 700;
+
+    &[data-player="blue"] {
+      color: a.$blue;
+    }
+
+    &[data-player="orange"] {
+      color: a.$orange;
+    }
+  }
+}
+
+// one chip per player
+.scorecard {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  border-radius: a.$radius;
+  background: rgb(255 255 255 / 7%);
+  // held by every card, transparent until it is that player's turn, so the
+  // chip never changes size when the turn passes
+  border: 2px solid transparent;
+  color: white;
+  transition: background 0.2s, border-color 0.2s;
+
+  &__name {
+    font-size: 16px;
+    opacity: 0.85;
+  }
+
+  &__value {
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  // the player to move is framed in his own colour
+  &.is-active {
+    background: rgb(255 255 255 / 14%);
+  }
+
+  &[data-player="blue"] {
+    .scorecard__value {
+      color: a.$blue;
+    }
+
+    &.is-active {
+      border-color: a.$blue;
+    }
+  }
+
+  &[data-player="orange"] {
+    .scorecard__value {
+      color: a.$orange;
+    }
+
+    &.is-active {
+      border-color: a.$orange;
+    }
+  }
+}
+
+// ---- the board itself ----
+//
+// the columns and rows arrive as custom properties, written onto the element
+// by screens/game.ts when the round is dealt. the fallbacks keep the grid
+// readable if the stylesheet is ever opened without the script.
+.board {
+  // widest the board is allowed to get, whatever the height budget allows
+  --cap: 640px;
+  --gap: clamp(8px, 1.2vw, 16px);
+
+  // what the 880px screen leaves once the padding, the topbar and the gap
+  // above are taken off - and never more than a short viewport can show
+  --available-height: min(700px, calc(86vh - 190px));
+
+  // the widest a card may be for every row to still fit the height. without
+  // this the 6x6 board runs off the bottom of the screen.
+  --card-max: calc((var(--available-height) - var(--gap) * (var(--rows, 4) - 1)) / var(--rows, 4));
+
+  display: grid;
+  grid-template-columns: repeat(var(--columns, 4), 1fr);
+  gap: var(--gap);
+  width: 100%;
+  margin: 0 auto;
+
+  // the plain cap comes first as the fallback: a browser that cannot read
+  // the calc above still gets a sensibly sized board
+  max-width: var(--cap);
+  max-width: min(
+    var(--cap),
+    calc(var(--card-max) * var(--columns, 4) + var(--gap) * (var(--columns, 4) - 1))
+  );
+
+  // the wider boards are allowed more room than the square one
+  &[data-size="4x6"],
+  &[data-size="6x6"] {
+    --cap: 780px;
+  }
+}
