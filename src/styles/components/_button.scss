@@ -90,4 +90,21 @@
       color: a.$board-dark;
     }
   }
+
+  // exit button (game) - outlined rather than filled, so the way out is
+  // always reachable without competing with the board for attention
+  &--exit {
+    background: none;
+    border: 2px solid a.$teal;
+    color: a.$teal;
+    font-size: 16px;
+    padding: 10px 20px;
+    transition: background 0.2s, color 0.2s;
+
+    &:hover,
+    &:focus-visible {
+      background: a.$teal;
+      color: a.$board-dark;
+    }
+  }
 }
