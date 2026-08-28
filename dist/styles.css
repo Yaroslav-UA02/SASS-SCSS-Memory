@@ -87,6 +87,77 @@ button {
   color: #2b2b2b;
 }
 
+.card {
+  perspective: 900px;
+  aspect-ratio: 1;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+.card__inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.4, 0.1, 0.2, 1);
+}
+.card__face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  backface-visibility: hidden;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+.card__face--back {
+  background: linear-gradient(160deg, var(--card-back-from, #6ee7c8), var(--card-back-to, #2f9e8a));
+  color: rgba(255, 255, 255, 0.45);
+}
+.card__face--back svg {
+  width: 40%;
+  height: auto;
+}
+.card__face--front {
+  background: var(--card-face, #eef2ef);
+  transform: rotateY(180deg);
+}
+.card__motif {
+  width: 58%;
+  height: 58%;
+  object-fit: contain;
+}
+.card.is-flipped .card__inner {
+  transform: rotateY(180deg);
+}
+.card.is-matched {
+  cursor: default;
+}
+.card.is-matched .card__inner {
+  transform: rotateY(180deg) scale(0.94);
+}
+.card.is-matched .card__face--front {
+  opacity: 0.55;
+  box-shadow: none;
+  outline: 3px solid var(--card-accent, #f0ea6e);
+  outline-offset: -3px;
+}
+.card:not(.is-flipped):hover .card__inner {
+  transform: translateY(-4px);
+}
+.card:focus-visible {
+  outline: 3px solid var(--card-accent, #f0ea6e);
+  outline-offset: 4px;
+  border-radius: 12px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .card__inner {
+    transition: none;
+  }
+}
+
 .screen--home {
   position: relative;
   overflow: hidden;

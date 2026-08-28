@@ -12,11 +12,11 @@ import { getTheme } from "./data/themes.js";
 import type { Card, FlipOutcome, GameConfig, GameResult, PlayerId, Scores } from "./types.js";
 
 /**
- * Shuffles an array in place, Fisher-Yates.
+ * Shuffles an array in place.
  *
- * Walking backwards and swapping with an earlier position gives every
- * arrangement the same chance - unlike `sort` with a random comparator, which
- * favours some orders over others.
+ * Walks the deck from the back and swaps every position with a randomly
+ * picked earlier one, which gives every arrangement the same chance -
+ * unlike `sort` with a random comparator, which favours some orders.
  *
  * @param items - The array to shuffle; it is modified.
  * @returns The same array, for chaining.
