@@ -229,13 +229,13 @@
     }
 
     &--back {
-      background: linear-gradient(160deg, #6ee7c8, #2f9e8a);
+      background: linear-gradient(160deg, var(--card-back-from), var(--card-back-to));
       transform: translate(-42px, 0) rotate(-8deg);
       color: rgba(255, 255, 255, 0.45);
     }
 
     &--front {
-      background: #eef2ef;
+      background: var(--card-face);
       transform: translate(52px, 26px) rotate(8deg);
     }
   }

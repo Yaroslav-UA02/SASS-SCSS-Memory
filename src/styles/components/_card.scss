@@ -1,6 +1,7 @@
 // memory card - two faces on one square, turned over in 3d
-
-@use "../abstracts" as a;
+//
+// every colour here comes in as a custom property, so one data-theme on the
+// board re-colours the whole deck (see base/_themes.scss)
 
 .card {
   // the depth of the turn: without a perspective the card just flattens out
@@ -34,10 +35,10 @@
     backface-visibility: hidden;
     box-shadow: 0 6px 16px rgb(0 0 0 / 35%);
 
-    // the colours come from the board's data-theme later on; until then
-    // these fallbacks match the preview on the settings screen
+    // the colours come from the board's data-theme, which base/_themes.scss
+    // turns into these properties
     &--back {
-      background: linear-gradient(160deg, var(--card-back-from, #6ee7c8), var(--card-back-to, #2f9e8a));
+      background: linear-gradient(160deg, var(--card-back-from), var(--card-back-to));
       color: rgb(255 255 255 / 45%);
 
       svg {
@@ -47,7 +48,7 @@
     }
 
     &--front {
-      background: var(--card-face, #eef2ef);
+      background: var(--card-face);
       // pre-turned, so it comes up the right way round after the rotation
       transform: rotateY(180deg);
     }
@@ -75,7 +76,7 @@
     .card__face--front {
       opacity: 0.55;
       box-shadow: none;
-      outline: 3px solid var(--card-accent, #{a.$yellow});
+      outline: 3px solid var(--card-accent);
       outline-offset: -3px;
     }
   }
@@ -86,7 +87,7 @@
   }
 
   &:focus-visible {
-    outline: 3px solid var(--card-accent, #{a.$yellow});
+    outline: 3px solid var(--card-accent);
     outline-offset: 4px;
     border-radius: 12px;
   }
