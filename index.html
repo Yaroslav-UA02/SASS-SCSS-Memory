@@ -203,6 +203,32 @@
     </div>
   </section>
 
+  <section class="screen screen--gameover" id="screen-gameover" aria-label="Result" hidden>
+    <div class="gameover">
+
+      <p class="gameover__eyebrow">Game over</p>
+      <!-- headline and scores are both filled in from the finished round -->
+      <h1 class="gameover__title">&nbsp;</h1>
+
+      <ul class="gameover__scores">
+        <li class="scorecard" data-player="blue">
+          <span class="scorecard__name">Blue</span>
+          <b class="scorecard__value">0</b>
+        </li>
+        <li class="scorecard" data-player="orange">
+          <span class="scorecard__name">Orange</span>
+          <b class="scorecard__value">0</b>
+        </li>
+      </ul>
+
+      <div class="gameover__actions">
+        <button class="btn btn--again" type="button">Play again</button>
+        <button class="btn btn--home" type="button">Back to start</button>
+      </div>
+
+    </div>
+  </section>
+
 </main>
 
 <!-- one card, stamped out once per card on the board -->
