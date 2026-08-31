@@ -19,3 +19,30 @@ $breakpoints: (
   "tablet": 768px,
   "desktop": 1024px,
 );
+
+// ---- colour schemes ----
+// each theme from the settings brings its own set of card colours. the values
+// are written into the document as custom properties (see base/_themes.scss),
+// so picking a theme stays one line in typescript: board.dataset.theme = "gaming"
+$themes: (
+  "code-vibes": (
+    back-from: #3ddc97,
+    back-to: #1f8f6a,
+    face: #eef7f3,
+    accent: #3ddc97,
+  ),
+  "gaming": (
+    back-from: #b06cff,
+    back-to: #5b2ea8,
+    face: #f2edff,
+    accent: #b06cff,
+  ),
+  "foods": (
+    back-from: #ff8a3d,
+    back-to: #c2521a,
+    face: #fff4e9,
+    // deliberately not the orange of the card back: the accent marks a found
+    // pair, and orange is already the colour of a player
+    accent: #ffc046,
+  ),
+);

@@ -2,6 +2,7 @@
 
 @use "abstracts" as a; // variables + mixins via the index
 @use "base/reset";
+@use "base/themes";
 
 // layout + components + pages
 @use "layout/screen";

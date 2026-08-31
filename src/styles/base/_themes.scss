@@ -1,0 +1,28 @@
+// writes the colour schemes into the document as custom properties.
+//
+// pulled in from main.scss exactly once - every other file only reads the
+// properties, so the hex values stay in _variables.scss and nowhere else.
+// the block matches on any element carrying data-theme, which is why the same
+// palette serves both the board and the preview on the settings screen.
+
+@use "sass:map";
+@use "../abstracts/variables" as v;
+
+// the fallback scheme: what the cards look like before a theme is picked,
+// i.e. the preview as the design shows it on an untouched settings screen
+:root {
+  --card-back-from: #6ee7c8;
+  --card-back-to: #2f9e8a;
+  --card-face: #eef2ef;
+  --card-accent: #{v.$yellow};
+}
+
+// one block per theme - the loop saves writing the same four lines three times
+@each $name, $palette in v.$themes {
+  [data-theme="#{$name}"] {
+    --card-back-from: #{map.get($palette, back-from)};
+    --card-back-to: #{map.get($palette, back-to)};
+    --card-face: #{map.get($palette, face)};
+    --card-accent: #{map.get($palette, accent)};
+  }
+}
