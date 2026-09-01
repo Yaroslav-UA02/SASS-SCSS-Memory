@@ -91,6 +91,39 @@
     }
   }
 
+  // play again (game over) - the loud way on, so it wears the yellow of the
+  // play button. smaller than that one: here it shares the row with a second
+  // button instead of carrying the screen on its own.
+  &--again {
+    background: a.$yellow;
+    color: a.$board-dark;
+    font-size: 20px;
+    padding: 14px 30px;
+    transition: scale 0.2s ease;
+
+    &:hover,
+    &:focus-visible {
+      scale: 1.05;
+    }
+  }
+
+  // back to start (game over) - the quiet twin of play again, outlined like
+  // the exit button so leaving looks the same wherever it is offered
+  &--home {
+    background: none;
+    border: 2px solid a.$teal;
+    color: a.$teal;
+    font-size: 20px;
+    padding: 12px 28px;
+    transition: background 0.2s, color 0.2s;
+
+    &:hover,
+    &:focus-visible {
+      background: a.$teal;
+      color: a.$board-dark;
+    }
+  }
+
   // exit button (game) - outlined rather than filled, so the way out is
   // always reachable without competing with the board for attention
   &--exit {
