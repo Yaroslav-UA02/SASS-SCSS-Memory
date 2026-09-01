@@ -1,0 +1,101 @@
+// user story 6 - the result screen
+//
+// the round is over by the time this screen is up, so it has one job: say who
+// won and offer the two ways on. the final standings borrow the chips from the
+// game screen, which is what makes them read as the same numbers the topbar was
+// showing a moment ago - only bigger, because now they are the whole point.
+
+@use "../abstracts" as a;
+
+// the result slides up into place instead of appearing: the screen swaps in
+// the moment the last pair is turned, and the movement is what tells the eye
+// the board has been replaced rather than just cleared
+@keyframes result-rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.screen--gameover {
+  justify-content: center;
+  padding: clamp(24px, 5vw, 64px);
+}
+
+.gameover {
+  text-align: center;
+
+  animation: result-rise 0.45s ease-out both;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+
+  // same pair of lines as the home screen: a quiet label over a loud title
+  &__eyebrow {
+    color: rgb(255 255 255 / 60%);
+    font-size: clamp(18px, 2.4vw, 28px);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  // the winner's name is written in his own colour, the way the turn is
+  // written in the topbar. a draw belongs to neither player, so it falls back
+  // to the yellow the screens use when nobody owns the text.
+  &__title {
+    color: a.$yellow;
+    font-size: clamp(44px, 8vw, 96px);
+    font-weight: 700;
+    line-height: 1.05;
+    margin-bottom: 48px;
+
+    &[data-player="blue"] {
+      color: a.$blue;
+    }
+
+    &[data-player="orange"] {
+      color: a.$orange;
+    }
+  }
+
+  &__scores {
+    display: flex;
+    justify-content: center;
+    gap: clamp(16px, 3vw, 32px);
+    flex-wrap: wrap;
+    margin-bottom: 48px;
+    list-style: none;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  // the chips are the topbar's, blown up: the final score is read from across
+  // the room, not from the corner of the eye
+  .scorecard {
+    flex-direction: column;
+    gap: 4px;
+    min-width: 180px;
+    padding: 24px 32px;
+    border-radius: a.$radius * 1.5;
+
+    &__name {
+      font-size: 20px;
+    }
+
+    &__value {
+      font-size: clamp(40px, 5vw, 56px);
+      line-height: 1.1;
+    }
+  }
+}

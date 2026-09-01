@@ -167,13 +167,17 @@ function syncTopbar(): void {
   const engine = requireEngine();
   const scores = engine.scores;
 
+  // the result screen carries a second pair of these chips, so the lookup
+  // stays inside the topbar
+  const topbar = qs<HTMLElement>(".topbar");
+
   for (const player of PLAYERS) {
-    const scorecard = qs<HTMLElement>(`.scorecard[data-player="${player.id}"]`);
+    const scorecard = qs<HTMLElement>(`.scorecard[data-player="${player.id}"]`, topbar);
     qs<HTMLElement>(".scorecard__value", scorecard).textContent = String(scores[player.id]);
     scorecard.classList.toggle("is-active", engine.currentPlayer === player.id);
   }
 
-  const turn = qs<HTMLElement>(".topbar__player");
+  const turn = qs<HTMLElement>(".topbar__player", topbar);
   turn.textContent = getPlayer(engine.currentPlayer).label;
   turn.dataset["player"] = engine.currentPlayer;
 }
