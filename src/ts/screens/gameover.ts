@@ -7,10 +7,12 @@
  * because the standings are read on every entry.
  */
 
-import { PLAYERS, getPlayer } from "../data/players.js";
+import { renderScorecards } from "../components/scoreboard.js";
+import { getPlayer } from "../data/players.js";
 import { qs } from "../dom.js";
 import { navigate } from "../router.js";
 import { endGame, requireEngine, startGame } from "../store.js";
+import type { PlayerId } from "../types.js";
 
 /** Wires the two ways on from the result up. Called once at start-up. */
 export function initGameover(): void {
@@ -31,18 +33,29 @@ export function renderGameover(): void {
   const { scores, winner } = requireEngine().result;
   const gameover = qs<HTMLElement>(".gameover");
 
-  const headline = qs<HTMLElement>(".gameover__title", gameover);
-  headline.textContent = winner === null ? "It's a draw!" : `${getPlayer(winner).label} wins!`;
-  // the headline is written in the winner's colour; a draw belongs to neither
-  // player, so the attribute comes off again rather than keeping the last one
-  if (winner === null) delete headline.dataset["player"];
-  else headline.dataset["player"] = winner;
+  renderHeadline(qs<HTMLElement>(".gameover__title", gameover), winner);
+  // the chips are the topbar's, so the final score is read exactly the way it
+  // was read all round - only the highlight moves from the turn to the winner
+  renderScorecards(gameover, scores, winner);
+}
 
-  // the chips are the ones from the topbar, so the score is read the same way
-  // it was read all round
-  for (const player of PLAYERS) {
-    const scorecard = qs<HTMLElement>(`.scorecard[data-player="${player.id}"]`, gameover);
-    qs<HTMLElement>(".scorecard__value", scorecard).textContent = String(scores[player.id]);
-    scorecard.classList.toggle("is-active", player.id === winner);
+/**
+ * Announces the winner, or the draw.
+ *
+ * The name is written in the winner's own colour, the way the turn is written
+ * in the topbar. A draw belongs to neither player, so the attribute comes off
+ * again rather than keeping the colour of whoever won last time.
+ *
+ * @param headline - Element the result is written into.
+ * @param winner - Who won, `null` on a draw.
+ */
+function renderHeadline(headline: HTMLElement, winner: PlayerId | null): void {
+  if (winner === null) {
+    headline.textContent = "It's a draw!";
+    delete headline.dataset["player"];
+    return;
   }
+
+  headline.textContent = `${getPlayer(winner).label} wins!`;
+  headline.dataset["player"] = winner;
 }
