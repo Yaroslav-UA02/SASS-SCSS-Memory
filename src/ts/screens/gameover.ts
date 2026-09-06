@@ -12,6 +12,7 @@ import { getPlayer } from "../data/players.js";
 import { qs } from "../dom.js";
 import { navigate } from "../router.js";
 import { endGame, requireEngine, startGame } from "../store.js";
+import { clearTheme } from "../theme.js";
 import type { PlayerId } from "../types.js";
 
 /** Wires the two ways on from the result up. Called once at start-up. */
@@ -30,6 +31,11 @@ export function initGameover(): void {
 
 /** Writes the final standings out. Runs on every visit to the screen. */
 export function renderGameover(): void {
+  // the result is dark whichever board was just played on, so the round's
+  // scheme ends with the round - a light theme would otherwise leave dark ink
+  // on this dark screen and take the player names with it
+  clearTheme();
+
   const { scores, winner } = requireEngine().result;
   const gameover = qs<HTMLElement>(".gameover");
 

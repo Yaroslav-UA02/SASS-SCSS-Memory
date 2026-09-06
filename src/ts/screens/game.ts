@@ -14,6 +14,7 @@ import { motifSrc } from "../data/themes.js";
 import { qs } from "../dom.js";
 import { navigate } from "../router.js";
 import { endGame, isGameRunning, requireEngine } from "../store.js";
+import { applyTheme, clearTheme } from "../theme.js";
 import type { Card, FlipOutcome, GameConfig, ThemeId } from "../types.js";
 
 /**
@@ -38,6 +39,7 @@ export function initGame(): void {
 
   qs<HTMLButtonElement>(".btn--exit").addEventListener("click", () => {
     endGame();
+    clearTheme();
     navigate("home");
   });
 }
@@ -78,16 +80,21 @@ export function renderGame(): void {
  * Hands the SCSS what it needs to draw the board: the theme picks the
  * colours, the grid numbers lay the cards out.
  *
- * @param board - Element both are written onto.
+ * The theme goes on the page rather than on the grid, because the colours it
+ * brings are the whole screen's - the surface under the cards, the ink on it
+ * and the way out are all above the board in the markup.
+ *
+ * @param board - Element the grid numbers are written onto.
  * @param config - The settings the round runs on.
  */
 function applyBoardLayout(board: HTMLElement, config: GameConfig): void {
   const size = getBoardSize(config.size);
-  board.dataset["theme"] = config.theme;
+  applyTheme(config.theme);
   board.dataset["size"] = size.id;
   board.style.setProperty("--columns", String(size.columns));
   board.style.setProperty("--rows", String(size.rows));
 }
+
 
 /**
  * Stamps one card out of the template in the markup.
