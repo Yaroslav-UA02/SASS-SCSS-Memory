@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,6 +13,13 @@
 </head>
 <body>
 
+<!--
+  One section per screen; the router shows exactly one of them at a time and
+  hides the rest with the hidden attribute, which also takes them out of the
+  accessibility tree. Each screen is a view of its own rather than a chapter
+  of one page, so each carries its own h1 - there is never more than one in
+  the document a reader actually sees.
+-->
 <main class="app">
 
   <section class="screen screen--home" id="screen-home" aria-label="Start screen" hidden>
@@ -138,7 +145,7 @@
 
             <div class="preview__bar">
               <span class="preview__score">Blue 0 &nbsp; Orange 6</span>
-              <span>Current player: <b class="preview__player">-</b></span>
+              <span>Current player: <strong class="preview__player">-</strong></span>
               <span class="preview__exit">Exit game</span>
             </div>
 
@@ -176,26 +183,26 @@
   <section class="screen screen--game" id="screen-game" aria-label="Game board" hidden>
     <div class="game">
 
-      <div class="topbar">
+      <header class="topbar">
 
         <div class="topbar__scores">
           <span class="scorecard" data-player="blue">
             <span class="scorecard__name">Blue</span>
-            <b class="scorecard__value">0</b>
+            <strong class="scorecard__value">0</strong>
           </span>
           <span class="scorecard" data-player="orange">
             <span class="scorecard__name">Orange</span>
-            <b class="scorecard__value">0</b>
+            <strong class="scorecard__value">0</strong>
           </span>
         </div>
 
         <p class="topbar__turn">
-          Current player: <b class="topbar__player">Blue</b>
+          Current player: <strong class="topbar__player">Blue</strong>
         </p>
 
         <button class="btn btn--exit" type="button">Exit game</button>
 
-      </div>
+      </header>
 
       <!-- the cards are dealt in from the card template below -->
       <div class="board" role="group" aria-label="Memory board"></div>
@@ -213,11 +220,11 @@
       <ul class="gameover__scores">
         <li class="scorecard" data-player="blue">
           <span class="scorecard__name">Blue</span>
-          <b class="scorecard__value">0</b>
+          <strong class="scorecard__value">0</strong>
         </li>
         <li class="scorecard" data-player="orange">
           <span class="scorecard__name">Orange</span>
-          <b class="scorecard__value">0</b>
+          <strong class="scorecard__value">0</strong>
         </li>
       </ul>
 
