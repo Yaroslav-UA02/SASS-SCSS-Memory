@@ -382,6 +382,20 @@ button {
   line-height: 1.1;
 }
 
+@media (min-width: 1440px) {
+  body[data-screen=gameover] {
+    position: relative;
+  }
+  body[data-screen=gameover]::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 160px;
+    background: url("../assets/confetti-strip.svg") repeat-x top left;
+    background-size: auto 100%;
+    pointer-events: none;
+  }
+}
 .screen--home {
   position: relative;
   overflow: hidden;
@@ -665,6 +679,15 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@media (min-width: 1440px) {
+  body {
+    background: #2b2b2b;
+  }
+  body[data-screen=settings] {
+    background: white;
+  }
 }
 
 /*# sourceMappingURL=styles.css.map */
