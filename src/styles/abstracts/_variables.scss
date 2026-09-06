@@ -1,7 +1,11 @@
 // all values live here - colors get filled in from figma later
 
 // colors from the design
-$blue: #2d6cdf; // player blue
+$blue: #2d6cdf; // player blue, as the design states it
+// the same blue lifted for the dark boards: #2d6cdf on charcoal lands under
+// the 3:1 WCAG asks of large text, and the score is the one number a player
+// reads from across the table
+$blue-on-dark: #6aa5ff;
 $orange: #ff8a3d; // player orange
 $yellow: #f0ea6e; // play / start button + controller
 $board-dark: #2b2b2b; // dark play area (home, game over...)
@@ -25,7 +29,8 @@ $breakpoints: (
 );
 
 // ---- colour schemes ----
-// each theme from the settings brings its own set of card colours. the values
+// each theme from the settings brings a whole colour scheme - the board it is
+// played on, the ink written on that board, and the cards. the values
 // are written into the document as custom properties (see base/_themes.scss),
 // so picking a theme stays one line in typescript: board.dataset.theme = "gaming"
 $themes: (
@@ -34,12 +39,29 @@ $themes: (
     back-to: #1f8f6a,
     face: #eef7f3,
     accent: #3ddc97,
+    // the charcoal board of the figma theme sheet, a shade lighter at the top
+    board-from: #4a4b4b,
+    board-to: $board-dark,
+    ink: white,
+    line: $teal,
+    blue: $blue-on-dark,
+    orange: $orange,
   ),
   "gaming": (
     back-from: #b06cff,
     back-to: #5b2ea8,
     face: #f2edff,
     accent: #b06cff,
+    board-from: #237396,
+    board-to: #264f61,
+    ink: white,
+    // the rose the design outlines the exit button with on the blue board,
+    // lightened until the button label clears 4.5:1 on it
+    line: #ffa3c4,
+    // the player blue is lifted off the blue board, which the darker one
+    // would disappear into
+    blue: #8cc2ff,
+    orange: $orange,
   ),
   "foods": (
     back-from: #ff8a3d,
@@ -48,5 +70,15 @@ $themes: (
     // deliberately not the orange of the card back: the accent marks a found
     // pair, and orange is already the colour of a player
     accent: #ffc046,
+    // the one light board in the set, which is why this theme states a dark
+    // ink and its own darker player colours
+    board-from: #f4efe9,
+    board-to: #e2dbd3,
+    ink: $text,
+    // the card orange darkened to the same end: the label has to read on a
+    // board that is nearly white
+    line: #9a3f12,
+    blue: #1d4ed8,
+    orange: #b45309,
   ),
 );
