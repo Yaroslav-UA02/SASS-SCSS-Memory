@@ -19,6 +19,12 @@ button {
 }
 
 :root {
+  --board-from: #2b2b2b;
+  --board-to: #2b2b2b;
+  --board-ink: white;
+  --board-line: #2ec4b6;
+  --player-blue: #6aa5ff;
+  --player-orange: #ff8a3d;
   --card-back-from: #6ee7c8;
   --card-back-to: #2f9e8a;
   --card-face: #eef2ef;
@@ -26,6 +32,12 @@ button {
 }
 
 [data-theme=code-vibes] {
+  --board-from: #4a4b4b;
+  --board-to: #2b2b2b;
+  --board-ink: white;
+  --board-line: #2ec4b6;
+  --player-blue: #6aa5ff;
+  --player-orange: #ff8a3d;
   --card-back-from: #3ddc97;
   --card-back-to: #1f8f6a;
   --card-face: #eef7f3;
@@ -33,6 +45,12 @@ button {
 }
 
 [data-theme=gaming] {
+  --board-from: #237396;
+  --board-to: #264f61;
+  --board-ink: white;
+  --board-line: #ffa3c4;
+  --player-blue: #8cc2ff;
+  --player-orange: #ff8a3d;
   --card-back-from: #b06cff;
   --card-back-to: #5b2ea8;
   --card-face: #f2edff;
@@ -40,10 +58,24 @@ button {
 }
 
 [data-theme=foods] {
+  --board-from: #f4efe9;
+  --board-to: #e2dbd3;
+  --board-ink: #1b1f24;
+  --board-line: #9a3f12;
+  --player-blue: #1d4ed8;
+  --player-orange: #b45309;
   --card-back-from: #ff8a3d;
   --card-back-to: #c2521a;
   --card-face: #fff4e9;
   --card-accent: #ffc046;
+}
+
+:root,
+body,
+[data-theme] {
+  --board-ink-soft: color-mix(in srgb, var(--board-ink) 78%, transparent);
+  --chip-bg: color-mix(in srgb, var(--board-ink) 8%, transparent);
+  --chip-bg-active: color-mix(in srgb, var(--board-ink) 15%, transparent);
 }
 
 .screen {
@@ -138,15 +170,15 @@ button {
 }
 .btn--exit {
   background: none;
-  border: 2px solid #2ec4b6;
-  color: #2ec4b6;
+  border: 2px solid var(--board-line);
+  color: var(--board-line);
   font-size: 16px;
   padding: 10px 20px;
   transition: background 0.2s, color 0.2s;
 }
 .btn--exit:hover, .btn--exit:focus-visible {
-  background: #2ec4b6;
-  color: #2b2b2b;
+  background: var(--board-line);
+  color: var(--board-from);
 }
 
 .card {
@@ -223,6 +255,8 @@ button {
 .screen--game {
   align-items: stretch;
   padding: clamp(20px, 3vw, 40px);
+  background: linear-gradient(150deg, var(--board-from), var(--board-to));
+  color: var(--board-ink);
 }
 
 .game {
@@ -244,17 +278,17 @@ button {
   gap: 12px;
 }
 .topbar__turn {
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--board-ink-soft);
   font-size: clamp(15px, 1.6vw, 20px);
 }
 .topbar__player {
   font-weight: 700;
 }
 .topbar__player[data-player=blue] {
-  color: #2d6cdf;
+  color: var(--player-blue);
 }
 .topbar__player[data-player=orange] {
-  color: #ff8a3d;
+  color: var(--player-orange);
 }
 
 .scorecard {
@@ -263,9 +297,9 @@ button {
   gap: 10px;
   padding: 8px 16px;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.07);
+  background: var(--chip-bg);
   border: 2px solid transparent;
-  color: white;
+  color: var(--board-ink);
   transition: background 0.2s, border-color 0.2s;
 }
 .scorecard__name {
@@ -277,19 +311,19 @@ button {
   font-weight: 700;
 }
 .scorecard.is-active {
-  background: rgba(255, 255, 255, 0.14);
+  background: var(--chip-bg-active);
 }
 .scorecard[data-player=blue] .scorecard__value {
-  color: #2d6cdf;
+  color: var(--player-blue);
 }
 .scorecard[data-player=blue].is-active {
-  border-color: #2d6cdf;
+  border-color: var(--player-blue);
 }
 .scorecard[data-player=orange] .scorecard__value {
-  color: #ff8a3d;
+  color: var(--player-orange);
 }
 .scorecard[data-player=orange].is-active {
-  border-color: #ff8a3d;
+  border-color: var(--player-orange);
 }
 
 .board {
@@ -348,7 +382,7 @@ button {
   margin-bottom: 48px;
 }
 .gameover__title[data-player=blue] {
-  color: #2d6cdf;
+  color: #6aa5ff;
 }
 .gameover__title[data-player=orange] {
   color: #ff8a3d;
@@ -573,7 +607,7 @@ button {
 .preview {
   position: relative;
   height: 300px;
-  background: radial-gradient(circle at 50% 42%, #3d3d3d, #232323);
+  background: radial-gradient(circle at 50% 42%, var(--board-from), var(--board-to));
   border-radius: 16px;
   overflow: hidden;
   padding: 14px;
@@ -583,27 +617,27 @@ button {
   align-items: center;
   justify-content: space-between;
   font-size: 11px;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--board-ink-soft);
 }
 .preview__score {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--chip-bg);
   padding: 4px 8px;
   border-radius: 6px;
 }
 .preview__exit {
-  border: 1px solid #2ec4b6;
-  color: #2ec4b6;
+  border: 1px solid var(--board-line);
+  color: var(--board-line);
   padding: 4px 8px;
   border-radius: 6px;
 }
 .preview__player {
-  color: white;
+  color: var(--board-ink);
 }
 .preview[data-player=blue] .preview__player {
-  color: #2d6cdf;
+  color: var(--player-blue);
 }
 .preview[data-player=orange] .preview__player {
-  color: #ff8a3d;
+  color: var(--player-orange);
 }
 .preview__cards {
   position: absolute;
@@ -685,8 +719,16 @@ body {
   body {
     background: #2b2b2b;
   }
+  body[data-screen=game] {
+    background: linear-gradient(150deg, var(--board-from), var(--board-to));
+  }
   body[data-screen=settings] {
     background: white;
+  }
+  .screen,
+  .screen--game,
+  .screen--settings {
+    background: none;
   }
 }
 
