@@ -39,25 +39,36 @@ function isBoardSizeId(value) {
  */
 export function initSettings() {
     qs(".settings__form").addEventListener("change", (event) => {
-        const input = event.target;
-        if (!(input instanceof HTMLInputElement))
-            return;
-        if (input.name === "theme" && isThemeId(input.value))
-            setTheme(input.value);
-        if (input.name === "player" && isPlayerId(input.value))
-            setPlayer(input.value);
-        if (input.name === "size" && isBoardSizeId(input.value))
-            setSize(input.value);
-        renderSettings();
+        if (event.target instanceof HTMLInputElement)
+            applyChoice(event.target);
     });
-    qs(".btn--start").addEventListener("click", () => {
-        // the button is disabled while something is missing; the check is the
-        // second lock, for a click that arrives via the keyboard anyway
-        if (!isDraftComplete())
-            return;
-        startGame();
-        navigate("game");
-    });
+    qs(".btn--start").addEventListener("click", startRound);
+}
+/**
+ * Writes one radio's choice into the store and redraws the screen.
+ *
+ * @param input - The radio that changed.
+ */
+function applyChoice(input) {
+    if (input.name === "theme" && isThemeId(input.value))
+        setTheme(input.value);
+    if (input.name === "player" && isPlayerId(input.value))
+        setPlayer(input.value);
+    if (input.name === "size" && isBoardSizeId(input.value))
+        setSize(input.value);
+    renderSettings();
+}
+/**
+ * Starts the round the settings describe.
+ *
+ * The button is disabled while something is missing; the check here is the
+ * second lock, for a click that arrives via the keyboard anyway.
+ */
+function startRound() {
+    if (!isDraftComplete())
+        return;
+    startGame();
+    navigate("game");
 }
 /** Redraws preview, breadcrumb and start button from the current draft. */
 export function renderSettings() {
@@ -72,32 +83,34 @@ export function renderSettings() {
     else
         settings.dataset["theme"] = draft.theme;
 }
+/** Fills the sample card and names the starting player. */
+function renderPreview() {
+    const { theme, player } = getDraft();
+    renderPreviewMotif(theme);
+    qs(".preview").dataset["player"] = player ?? "";
+    qs(".preview__player").textContent = player === null ? "-" : getPlayer(player).label;
+}
 /**
- * Fills the sample card with the chosen theme and names the starting player.
+ * Shows one motif of the chosen theme on the sample card.
  *
  * Before a theme is picked the card stays empty on purpose - showing some
  * random motif would suggest a choice that has not been made.
+ *
+ * @param theme - The chosen theme, `null` while nothing is picked.
  */
-function renderPreview() {
-    const { theme, player } = getDraft();
-    const preview = qs(".preview");
+function renderPreviewMotif(theme) {
     const motif = qs(".preview__motif");
-    if (theme === null) {
+    // the first motif stands in for the whole set
+    const [sample] = theme === null ? [] : getTheme(theme).motifs;
+    if (theme === null || sample === undefined) {
         motif.hidden = true;
         motif.removeAttribute("src");
         motif.alt = "";
+        return;
     }
-    else {
-        // the first motif stands in for the whole set
-        const [sample] = getTheme(theme).motifs;
-        if (sample) {
-            motif.src = motifSrc(theme, sample.id);
-            motif.alt = sample.label;
-            motif.hidden = false;
-        }
-    }
-    preview.dataset["player"] = player ?? "";
-    qs(".preview__player").textContent = player === null ? "-" : getPlayer(player).label;
+    motif.src = motifSrc(theme, sample.id);
+    motif.alt = sample.label;
+    motif.hidden = false;
 }
 /** Ticks off the breadcrumb steps that are already picked. */
 function renderBreadcrumb() {

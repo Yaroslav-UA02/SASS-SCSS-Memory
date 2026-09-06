@@ -2,27 +2,61 @@
 //
 // pulled in from main.scss exactly once - every other file only reads the
 // properties, so the hex values stay in _variables.scss and nowhere else.
-// the block matches on any element carrying data-theme, which is why the same
-// palette serves both the board and the preview on the settings screen.
 
 @use "sass:map";
 @use "../abstracts/variables" as v;
 
-// the fallback scheme: what the cards look like before a theme is picked,
-// i.e. the preview as the design shows it on an untouched settings screen
+// the fallback scheme: what the app looks like before a theme is picked, i.e.
+// the home screen and the untouched settings preview. board-from and board-to
+// are the same colour here, so the gradient collapses to the flat dark the
+// design uses everywhere outside a round.
 :root {
+  --board-from: #{v.$board-dark};
+  --board-to: #{v.$board-dark};
+  --board-ink: white;
+  --board-line: #{v.$teal};
+  --player-blue: #{v.$blue-on-dark};
+  --player-orange: #{v.$orange};
+
   --card-back-from: #6ee7c8;
   --card-back-to: #2f9e8a;
   --card-face: #eef2ef;
   --card-accent: #{v.$yellow};
 }
 
-// one block per theme - the loop saves writing the same four lines three times
+// one block per theme - the loop saves writing the same ten lines three times
 @each $name, $palette in v.$themes {
+  // the attribute is carried by the page while a round runs and by the
+  // settings screen while one is being put together, which is what lets the
+  // same palette serve the real board and its miniature preview.
+  //
+  // it deliberately is a plain attribute rather than a :has() on the board:
+  // chrome does not reliably re-resolve an inherited property when a :has()
+  // rule starts matching, so the exit button kept the colour of the theme
+  // before it while its border already had the new one.
   [data-theme="#{$name}"] {
+    --board-from: #{map.get($palette, board-from)};
+    --board-to: #{map.get($palette, board-to)};
+    --board-ink: #{map.get($palette, ink)};
+    --board-line: #{map.get($palette, line)};
+    --player-blue: #{map.get($palette, blue)};
+    --player-orange: #{map.get($palette, orange)};
+
     --card-back-from: #{map.get($palette, back-from)};
     --card-back-to: #{map.get($palette, back-to)};
     --card-face: #{map.get($palette, face)};
     --card-accent: #{map.get($palette, accent)};
   }
+}
+
+// the quieter shades are mixed from the ink rather than stated per theme, so
+// a theme only ever has to say whether it is written in light or dark. the
+// list repeats every element that sets its own ink, because a mix has to be
+// worked out where the ink it reads is set - not inherited already blended.
+:root,
+body,
+[data-theme] {
+  --board-ink-soft: color-mix(in srgb, var(--board-ink) 78%, transparent);
+  --chip-bg: color-mix(in srgb, var(--board-ink) 8%, transparent);
+  --chip-bg-active: color-mix(in srgb, var(--board-ink) 15%, transparent);
 }

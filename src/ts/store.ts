@@ -75,6 +75,17 @@ export function startGame(): MemoryEngine {
 }
 
 /**
+ * Whether a round is running at all.
+ *
+ * A timer that outlives its board - the one that turns a wrong pair back
+ * over - asks this before it touches the engine, because the player may have
+ * left the game in the meantime.
+ */
+export function isGameRunning(): boolean {
+  return engine !== null;
+}
+
+/**
  * The running round.
  *
  * @returns The engine.
