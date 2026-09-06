@@ -125,19 +125,21 @@
   }
 
   // exit button (game) - outlined rather than filled, so the way out is
-  // always reachable without competing with the board for attention
+  // always reachable without competing with the board for attention. the
+  // outline is the theme's line colour, because the button sits on the
+  // themed board and the teal would vanish into the light one.
   &--exit {
     background: none;
-    border: 2px solid a.$teal;
-    color: a.$teal;
+    border: 2px solid var(--board-line);
+    color: var(--board-line);
     font-size: 16px;
     padding: 10px 20px;
     transition: background 0.2s, color 0.2s;
 
     &:hover,
     &:focus-visible {
-      background: a.$teal;
-      color: a.$board-dark;
+      background: var(--board-line);
+      color: var(--board-from);
     }
   }
 }

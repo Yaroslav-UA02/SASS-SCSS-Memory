@@ -163,8 +163,9 @@
 .preview {
   position: relative;
   height: 300px;
-  // radial gradient - a bit lighter in the middle
-  background: radial-gradient(circle at 50% 42%, #3d3d3d, #232323);
+  // the preview is a miniature of the game screen, so it is painted from the
+  // same scheme - picking a theme repaints the panel, not just the two cards
+  background: radial-gradient(circle at 50% 42%, var(--board-from), var(--board-to));
   border-radius: 16px;
   overflow: hidden;
   padding: 14px;
@@ -175,33 +176,33 @@
     align-items: center;
     justify-content: space-between;
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--board-ink-soft);
   }
 
   &__score {
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--chip-bg);
     padding: 4px 8px;
     border-radius: 6px;
   }
 
   &__exit {
-    border: 1px solid a.$teal;
-    color: a.$teal;
+    border: 1px solid var(--board-line);
+    color: var(--board-line);
     padding: 4px 8px;
     border-radius: 6px;
   }
 
   // the chosen starting player gets his color in the mini topbar
   &__player {
-    color: white;
+    color: var(--board-ink);
   }
 
   &[data-player="blue"] &__player {
-    color: a.$blue;
+    color: var(--player-blue);
   }
 
   &[data-player="orange"] &__player {
-    color: a.$orange;
+    color: var(--player-orange);
   }
 
   // the two cards centered
