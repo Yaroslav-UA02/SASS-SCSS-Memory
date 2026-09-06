@@ -38,9 +38,24 @@ body {
     background: a.$board-dark;
   }
 
+  // the board is the one screen that brings its own colours, and the theme
+  // outlives the round - so the page follows the screen, not the attribute
+  body[data-screen="game"] {
+    background: linear-gradient(150deg, var(--board-from), var(--board-to));
+  }
+
   // settings is the one screen that is white rather than dark, so the page has
   // to follow whichever screen is up - the router writes that onto the body
   body[data-screen="settings"] {
     background: white;
+  }
+
+  // the page is the surface from here on, so the box must not paint a second
+  // one on top: two gradients over two different box sizes never line up, and
+  // the seam draws exactly the edge this breakpoint is meant to dissolve
+  .screen,
+  .screen--game,
+  .screen--settings {
+    background: none;
   }
 }
