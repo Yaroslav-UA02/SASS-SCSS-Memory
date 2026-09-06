@@ -18,6 +18,10 @@ $breakpoints: (
   "phone": 480px,
   "tablet": 768px,
   "desktop": 1024px,
+  // the design adds a widescreen layout on top of the desktop one (figma note
+  // "How to Widescreen"): from here the page stops being a grey mat around the
+  // board and takes the board's own colour
+  "wide": 1440px,
 );
 
 // ---- colour schemes ----
