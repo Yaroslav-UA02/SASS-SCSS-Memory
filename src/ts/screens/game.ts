@@ -13,7 +13,7 @@ import { getPlayer } from "../data/players.js";
 import { motifSrc } from "../data/themes.js";
 import { qs } from "../dom.js";
 import { navigate } from "../router.js";
-import { endGame, requireEngine } from "../store.js";
+import { endGame, isGameRunning, requireEngine } from "../store.js";
 import type { Card, FlipOutcome, GameConfig, ThemeId } from "../types.js";
 
 /**
@@ -137,7 +137,7 @@ function handleFlip(index: number): void {
 function showMatch(finished: boolean): void {
   syncCards();
   syncTopbar();
-  if (finished) window.setTimeout(() => navigate("gameover"), FINISH_DELAY);
+  if (finished) window.setTimeout(showResult, FINISH_DELAY);
 }
 
 /**
@@ -149,10 +149,18 @@ function showMatch(finished: boolean): void {
 function showMiss(): void {
   syncCards();
   window.setTimeout(() => {
+    // the player may have walked out while the pair was still up, and then
+    // there is no round left to settle
+    if (!isGameRunning()) return;
     requireEngine().settle();
     syncCards();
     syncTopbar();
   }, MISS_DELAY);
+}
+
+/** Opens the result screen, unless the player left before it was due. */
+function showResult(): void {
+  if (isGameRunning()) navigate("gameover");
 }
 
 /**
