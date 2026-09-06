@@ -27,3 +27,20 @@ body {
   width: 100%;
   @include a.flex-center;
 }
+
+// ---- widescreen, from 1440px ----
+// the design keeps the content box exactly as wide as it is on desktop and
+// only lets the background out: past 1440px the grey mat would otherwise grow
+// into two empty margins that make the board look small. so the page takes
+// over the surface colour and the box keeps centring the content on top of it.
+@include a.respond("wide") {
+  body {
+    background: a.$board-dark;
+  }
+
+  // settings is the one screen that is white rather than dark, so the page has
+  // to follow whichever screen is up - the router writes that onto the body
+  body[data-screen="settings"] {
+    background: white;
+  }
+}

@@ -99,3 +99,30 @@
     }
   }
 }
+
+// ---- widescreen, from 1440px ----
+// the figma widescreen frame hangs a long confetti strip over the result. it
+// is drawn rather than put in the markup because it says nothing a reader
+// needs - the headline already announces the winner.
+@include a.respond("wide") {
+  // the strip belongs to the page and not to the result box: from this
+  // breakpoint the dark surface is the whole page (see main.scss), so the
+  // design hangs the confetti off the top edge of the window. anchoring it to
+  // the box instead would leave it floating in the middle of the dark.
+  body[data-screen="gameover"] {
+    position: relative;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 160px;
+      // the file holds one tile of confetti, repeated sideways for however
+      // wide the window turns out to be - hence a "long strip" rather than
+      // one image stretched out of shape
+      background: url("../assets/confetti-strip.svg") repeat-x top left;
+      background-size: auto 100%;
+      pointer-events: none;
+    }
+  }
+}
