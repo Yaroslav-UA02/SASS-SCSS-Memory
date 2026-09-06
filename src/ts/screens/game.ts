@@ -6,14 +6,15 @@
  * is repeated here, so the two can never disagree about whose turn it is.
  */
 
+import { renderScorecards } from "../components/scoreboard.js";
 import { MISS_DELAY } from "../config.js";
 import { getBoardSize } from "../data/board-sizes.js";
-import { PLAYERS, getPlayer } from "../data/players.js";
+import { getPlayer } from "../data/players.js";
 import { motifSrc } from "../data/themes.js";
 import { qs } from "../dom.js";
 import { navigate } from "../router.js";
-import { endGame, requireEngine } from "../store.js";
-import type { Card, ThemeId } from "../types.js";
+import { endGame, isGameRunning, requireEngine } from "../store.js";
+import type { Card, FlipOutcome, GameConfig, ThemeId } from "../types.js";
 
 /**
  * How long the last matched pair stays on screen before the result.
@@ -31,16 +32,8 @@ const FINISH_DELAY = 800;
  */
 export function initGame(): void {
   qs<HTMLElement>(".board").addEventListener("click", (event) => {
-    const target = event.target;
-    if (!(target instanceof Element)) return;
-
-    const card = target.closest<HTMLButtonElement>(".card");
-    if (card === null) return;
-
-    const index = Number(card.dataset["index"]);
-    if (Number.isNaN(index)) return;
-
-    handleFlip(index);
+    const index = clickedCardIndex(event);
+    if (index !== null) handleFlip(index);
   });
 
   qs<HTMLButtonElement>(".btn--exit").addEventListener("click", () => {
@@ -49,25 +42,51 @@ export function initGame(): void {
   });
 }
 
+/**
+ * Finds the card a click landed on.
+ *
+ * @param event - The click, caught on the board rather than on a card.
+ * @returns The card's place on the board, or `null` if the click missed the
+ * cards altogether - the gap between them counts as no click at all.
+ */
+function clickedCardIndex(event: MouseEvent): number | null {
+  const target = event.target;
+  if (!(target instanceof Element)) return null;
+
+  const card = target.closest<HTMLButtonElement>(".card");
+  if (card === null) return null;
+
+  const index = Number(card.dataset["index"]);
+  return Number.isNaN(index) ? null : index;
+}
+
 /** Deals a fresh board. Runs on every visit to the screen. */
 export function renderGame(): void {
   const engine = requireEngine();
-  const size = getBoardSize(engine.config.size);
   const board = qs<HTMLElement>(".board");
 
-  // the SCSS reads both off the board: the theme picks the colours, the
-  // grid numbers lay the cards out
-  board.dataset["theme"] = engine.config.theme;
-  board.dataset["size"] = size.id;
-  board.style.setProperty("--columns", String(size.columns));
-  board.style.setProperty("--rows", String(size.rows));
-
+  applyBoardLayout(board, engine.config);
   board.replaceChildren(
     ...engine.cards.map((card, index) => buildCard(card, index, engine.config.theme)),
   );
 
   syncCards();
   syncTopbar();
+}
+
+/**
+ * Hands the SCSS what it needs to draw the board: the theme picks the
+ * colours, the grid numbers lay the cards out.
+ *
+ * @param board - Element both are written onto.
+ * @param config - The settings the round runs on.
+ */
+function applyBoardLayout(board: HTMLElement, config: GameConfig): void {
+  const size = getBoardSize(config.size);
+  board.dataset["theme"] = config.theme;
+  board.dataset["size"] = size.id;
+  board.style.setProperty("--columns", String(size.columns));
+  board.style.setProperty("--rows", String(size.rows));
 }
 
 /**
@@ -99,40 +118,49 @@ function buildCard(card: Card, index: number, theme: ThemeId): HTMLButtonElement
  * @param index - The card that was clicked.
  */
 function handleFlip(index: number): void {
-  const engine = requireEngine();
-  const outcome = engine.flip(index);
+  const outcome = requireEngine().flip(index);
 
   switch (outcome.kind) {
-    case "ignored":
-      return;
-
-    case "first":
-      syncCards();
-      return;
-
-    case "match":
-      syncCards();
-      syncTopbar();
-      if (outcome.finished) window.setTimeout(() => navigate("gameover"), FINISH_DELAY);
-      return;
-
-    case "miss":
-      // both stay up long enough to be memorized, then the engine turns them
-      // back over and the turn passes
-      syncCards();
-      window.setTimeout(() => {
-        engine.settle();
-        syncCards();
-        syncTopbar();
-      }, MISS_DELAY);
-      return;
-
-    default: {
-      // if a new outcome is ever added, this line stops compiling
-      const never: never = outcome;
-      return never;
-    }
+    case "ignored": return;
+    case "first": return syncCards();
+    case "match": return showMatch(outcome.finished);
+    case "miss": return showMiss();
+    default: return assertNever(outcome);
   }
+}
+
+/**
+ * Draws a found pair, and moves on to the result once it was the last one.
+ *
+ * @param finished - Whether that pair completed the board.
+ */
+function showMatch(finished: boolean): void {
+  syncCards();
+  syncTopbar();
+  if (finished) window.setTimeout(showResult, FINISH_DELAY);
+}
+
+/**
+ * Draws a missed turn.
+ *
+ * Both cards stay up long enough to be memorized; then the engine turns them
+ * back over and the turn passes.
+ */
+function showMiss(): void {
+  syncCards();
+  window.setTimeout(() => {
+    // the player may have walked out while the pair was still up, and then
+    // there is no round left to settle
+    if (!isGameRunning()) return;
+    requireEngine().settle();
+    syncCards();
+    syncTopbar();
+  }, MISS_DELAY);
+}
+
+/** Opens the result screen, unless the player left before it was due. */
+function showResult(): void {
+  if (isGameRunning()) navigate("gameover");
 }
 
 /**
@@ -142,42 +170,55 @@ function handleFlip(index: number): void {
  * restart the flip animation from the beginning.
  */
 function syncCards(): void {
-  const engine = requireEngine();
   const board = qs<HTMLElement>(".board");
 
-  engine.cards.forEach((card, index) => {
+  requireEngine().cards.forEach((card, index) => {
     const button = board.children[index];
-    if (!(button instanceof HTMLButtonElement)) return;
-
-    const open = card.state !== "hidden";
-    button.classList.toggle("is-flipped", open);
-    button.classList.toggle("is-matched", card.state === "matched");
-
-    // a found pair stays on the board but is out of play
-    button.disabled = card.state === "matched";
-    button.setAttribute(
-      "aria-label",
-      open ? `Card ${index + 1}, ${card.motif.label}` : `Card ${index + 1}, face down`,
-    );
+    if (button instanceof HTMLButtonElement) syncCard(button, card, index);
   });
+}
+
+/**
+ * Puts one card into the state the engine has it in.
+ *
+ * @param button - The card on the board.
+ * @param card - What the engine says about it.
+ * @param index - Its place, which is what the spoken label counts from.
+ */
+function syncCard(button: HTMLButtonElement, card: Card, index: number): void {
+  const open = card.state !== "hidden";
+  button.classList.toggle("is-flipped", open);
+  button.classList.toggle("is-matched", card.state === "matched");
+
+  // a found pair stays on the board but is out of play
+  button.disabled = card.state === "matched";
+  button.setAttribute(
+    "aria-label",
+    open ? `Card ${index + 1}, ${card.motif.label}` : `Card ${index + 1}, face down`,
+  );
 }
 
 /** Puts the scores and the active player in the topbar. */
 function syncTopbar(): void {
   const engine = requireEngine();
-  const scores = engine.scores;
-
-  // the result screen carries a second pair of these chips, so the lookup
-  // stays inside the topbar
+  // the result screen carries a second pair of chips, so the lookup stays
+  // inside the topbar
   const topbar = qs<HTMLElement>(".topbar");
 
-  for (const player of PLAYERS) {
-    const scorecard = qs<HTMLElement>(`.scorecard[data-player="${player.id}"]`, topbar);
-    qs<HTMLElement>(".scorecard__value", scorecard).textContent = String(scores[player.id]);
-    scorecard.classList.toggle("is-active", engine.currentPlayer === player.id);
-  }
+  renderScorecards(topbar, engine.scores, engine.currentPlayer);
 
   const turn = qs<HTMLElement>(".topbar__player", topbar);
   turn.textContent = getPlayer(engine.currentPlayer).label;
   turn.dataset["player"] = engine.currentPlayer;
+}
+
+/**
+ * Marks the branch the type system has already ruled out.
+ *
+ * @param outcome - Whatever is left over, which is `never` by now.
+ * @throws Always. Adding an outcome without handling it here stops compiling
+ * first, so this only ever fires if the engine is changed at runtime.
+ */
+function assertNever(outcome: never): never {
+  throw new Error(`Unhandled flip outcome: ${JSON.stringify(outcome as FlipOutcome)}`);
 }

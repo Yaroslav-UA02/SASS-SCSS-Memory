@@ -114,11 +114,8 @@ export class MemoryEngine {
    * @returns What happened, for the board to animate.
    */
   flip(index: number): FlipOutcome {
-    if (this.isLocked || this.isFinished) return { kind: "ignored" };
-
-    const card = this.deck[index];
-    // out of range, already open or already matched - nothing to do
-    if (card === undefined || card.state !== "hidden") return { kind: "ignored" };
+    const card = this.pickable(index);
+    if (card === null) return { kind: "ignored" };
 
     card.state = "revealed";
 
@@ -127,22 +124,51 @@ export class MemoryEngine {
       return { kind: "first", index };
     }
 
-    const first = this.deck[this.firstPick] as Card;
-    const pair: readonly [number, number] = [this.firstPick, index];
+    const opener = this.firstPick;
     this.firstPick = null;
+    return this.score(opener, index);
+  }
 
-    // a hit scores a point and the same player carries on
-    if (first.pairId === card.pairId) {
-      first.state = "matched";
-      card.state = "matched";
-      this.matchedPairs++;
-      this.scoreboard[this.activePlayer]++;
-      return { kind: "match", indices: pair, player: this.activePlayer, finished: this.isFinished };
+  /**
+   * The card a click is actually allowed to turn over.
+   *
+   * @param index - Position that was clicked.
+   * @returns The card, or `null` if the click does not count: the board is
+   * locked, the round is over, the index is out of range, or the card is
+   * already face up.
+   */
+  private pickable(index: number): Card | null {
+    if (this.isLocked || this.isFinished) return null;
+    const card = this.deck[index];
+    if (card === undefined || card.state !== "hidden") return null;
+    return card;
+  }
+
+  /**
+   * Scores the second card of a turn against the first.
+   *
+   * A hit is kept on the board and the same player carries on; a miss leaves
+   * both cards face up until the board calls {@link settle}.
+   *
+   * @param openerIndex - Card that was turned over first this turn.
+   * @param index - Card that has just been turned over.
+   * @returns The outcome, for the board to animate.
+   */
+  private score(openerIndex: number, index: number): FlipOutcome {
+    const opener = this.deck[openerIndex] as Card;
+    const card = this.deck[index] as Card;
+    const indices: readonly [number, number] = [openerIndex, index];
+
+    if (opener.pairId !== card.pairId) {
+      this.pendingMiss = indices;
+      return { kind: "miss", indices };
     }
 
-    // a miss leaves both cards up; the board calls settle() after MISS_DELAY
-    this.pendingMiss = pair;
-    return { kind: "miss", indices: pair };
+    opener.state = "matched";
+    card.state = "matched";
+    this.matchedPairs++;
+    this.scoreboard[this.activePlayer]++;
+    return { kind: "match", indices, player: this.activePlayer, finished: this.isFinished };
   }
 
   /**
